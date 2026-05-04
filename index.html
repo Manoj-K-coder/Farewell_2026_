@@ -383,8 +383,8 @@
         <div id="typingBox"><span class="cursor-blink"></span></div>
 
         <div class="btn-area" id="btnArea">
-          <button class="btn-yes" onclick="sayYes()">Accept âœ¦</button>
-          <button id="noBtn" onclick="moveNo()">Reject ðŸ˜¢</button>
+          <button class="btn-yes" onclick="sayYes()">Accept </button>
+          <button id="noBtn" onclick="moveNo()">Reject</button>
         </div>
 
       </div>
@@ -484,7 +484,7 @@
     // Accept
     function sayYes() {
       const r = document.getElementById('response');
-      r.innerText = "Thank you, Sonu â€”";
+      r.innerText = "Thank you, Sonu ";
       r.classList.add('show');
       const colors = ['#e8859a','#f0b0c0','#fde0e8','#ffffff','#d4537e'];
       confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 }, colors });
