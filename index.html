@@ -806,6 +806,79 @@
     transform:translateY(-2px);
   }
 
+  /* ---------- SOCIAL ---------- */
+  .social-section{
+    background:var(--void);
+    padding:2rem 1.2rem 6rem;
+    text-align:center;
+  }
+  .social-heading{ margin-bottom:.5rem; }
+  .social-sub{
+    color:var(--text-dim);
+    font-size:.85rem;
+    max-width:480px;
+    margin:0 auto 2rem;
+    font-family:'Fira Code', monospace;
+  }
+  .social-card{
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    max-width:420px;
+    margin:0 auto;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:1.1rem 1.3rem;
+    text-decoration:none;
+    color:var(--text);
+    transition:transform .3s cubic-bezier(.16,.8,.24,1), border-color .3s ease, box-shadow .3s ease;
+  }
+  .social-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--green);
+    box-shadow:0 20px 40px -15px rgba(126,231,135,0.22);
+    color:var(--text);
+  }
+  .social-icon{
+    flex-shrink:0;
+    width:46px; height:46px;
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.3rem;
+    color:#fff;
+    background:linear-gradient(135deg, #feda75, #d62976 55%, #4f5bd5);
+  }
+  .social-info{
+    display:flex;
+    flex-direction:column;
+    text-align:left;
+    flex:1;
+    min-width:0;
+  }
+  .social-name{
+    font-family:'JetBrains Mono', monospace;
+    font-size:1rem;
+    font-weight:700;
+    color:var(--text);
+  }
+  .social-tag{
+    font-family:'Fira Code', monospace;
+    font-size:.72rem;
+    color:var(--text-dim);
+    margin-top:.15rem;
+  }
+  .social-arrow{
+    flex-shrink:0;
+    color:var(--text-dim);
+    font-size:.85rem;
+    transition:color .2s ease, transform .2s ease;
+  }
+  .social-card:hover .social-arrow{
+    color:var(--green);
+    transform:translate(2px,-2px);
+  }
+
   /* ---------- FOOTER ---------- */
   footer{
     text-align:center;
@@ -1015,6 +1088,7 @@
     <a class="flash-hover-text" href="#details">details</a>
     <a class="flash-hover-text" href="#memories">memories</a>
     <a class="flash-hover-text" href="#venue">venue</a>
+    <a class="flash-hover-text" href="#social">social</a>
     <button class="theme-toggle flash-hover" id="themeToggle" type="button" aria-label="Toggle light and dark theme">
       <i class="fa-solid fa-moon"></i>
       <i class="fa-solid fa-sun"></i>
@@ -1213,6 +1287,20 @@
       </a>
     </div>
   </div>
+</section>
+
+<!-- ================= SOCIAL ================= -->
+<section class="social-section reveal" id="social">
+  <h2 class="display-font social-heading">Stay Linked</h2>
+  <p class="social-sub"><span style="color:var(--green)">$</span> follow @mcaa_homies — the official MCA handle.</p>
+  <a class="social-card flash-hover" href="https://www.instagram.com/mcaa_homies?igsh=eDA3b2c4aGo2d3lq" target="_blank" rel="noopener">
+    <div class="social-icon"><i class="fa-brands fa-instagram"></i></div>
+    <div class="social-info">
+      <span class="social-name">@mcaa_homies</span>
+      <span class="social-tag">// official MCA Instagram</span>
+    </div>
+    <div class="social-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+  </a>
 </section>
 
 <!-- ================= LIGHTBOX ================= -->
