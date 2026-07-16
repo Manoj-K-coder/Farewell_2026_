@@ -795,10 +795,95 @@
     border-top:1px solid var(--line);
   }
   footer .prompt{ color:var(--green); }
+  footer .credit-line{
+    margin-top:.6rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:.5rem;
+    font-family:'Fira Code', monospace;
+    font-size:.78rem;
+  }
+  footer .credit-name{ color:var(--text); }
+  footer .credit-sep{ color:var(--line); }
+  footer .credit-link{
+    display:inline-flex;
+    align-items:center;
+    gap:.4rem;
+    color:var(--text-dim);
+    text-decoration:none;
+    transition:color .2s ease;
+  }
+  footer .credit-link i{ font-size:.9rem; }
+  footer .credit-link:hover{ color:var(--green); }
 
   @media (max-width:700px){
     .ticket-body{ flex-direction:column; }
     .ticket-gutter{ display:none; }
+  }
+
+  /* ---------- LIGHTBOX ---------- */
+  .commit-thumb.has-lightbox{ cursor:zoom-in; }
+  .lightbox-overlay{
+    position:fixed; inset:0; z-index:2000;
+    display:flex; align-items:center; justify-content:center;
+    padding:2rem;
+    background:rgba(5,7,11,0.92);
+    backdrop-filter:blur(6px);
+    opacity:0; visibility:hidden;
+    transition:opacity .3s ease, visibility 0s linear .3s;
+  }
+  .lightbox-overlay.active{
+    opacity:1; visibility:visible;
+    transition:opacity .3s ease, visibility 0s linear 0s;
+  }
+  .lightbox-frame{
+    position:relative;
+    max-width:min(90vw, 900px);
+    max-height:88vh;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    background:var(--panel);
+    box-shadow:0 40px 90px -20px rgba(0,0,0,0.85);
+    transform:scale(.94);
+    transition:transform .3s cubic-bezier(.16,.8,.24,1);
+  }
+  .lightbox-overlay.active .lightbox-frame{ transform:scale(1); }
+  .lightbox-titlebar{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:.7rem;
+    padding:.6rem .8rem;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--line);
+    font-family:'Fira Code', monospace;
+    font-size:.72rem;
+    color:var(--text-dim);
+  }
+  .lightbox-titlebar .dots{ display:flex; gap:6px; }
+  .lightbox-titlebar .dots span{ width:10px; height:10px; border-radius:50%; }
+  .lightbox-titlebar .dots span:nth-child(1){ background:#ff5f56; }
+  .lightbox-titlebar .dots span:nth-child(2){ background:#ffbd2e; }
+  .lightbox-titlebar .dots span:nth-child(3){ background:#27c93f; }
+  .lightbox-close{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--text-dim);
+    border-radius:5px;
+    width:26px; height:26px;
+    display:inline-flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    font-size:.8rem;
+    transition:color .2s ease, border-color .2s ease, transform .2s ease;
+  }
+  .lightbox-close:hover{ color:var(--green); border-color:var(--green); transform:rotate(90deg); }
+  .lightbox-frame img{
+    display:block;
+    max-width:min(90vw, 900px);
+    max-height:calc(88vh - 40px);
+    width:auto; height:auto;
+    object-fit:contain;
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -1055,9 +1140,33 @@
   </div>
 </section>
 
+<!-- ================= LIGHTBOX ================= -->
+<div class="lightbox-overlay" id="lightboxOverlay" role="dialog" aria-modal="true" aria-label="Image preview">
+  <div class="lightbox-frame" id="lightboxFrame">
+    <div class="lightbox-titlebar">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <span id="lightboxFilename">preview.jpg</span>
+      <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close preview">✕</button>
+    </div>
+    <img id="lightboxImg" src="" alt="">
+  </div>
+</div>
+
 <footer>
-  <span class="prompt">$</span> echo "made with care for the graduating class of 2026" — The Last Bell <br>Design And Developed By LAKE 
-  (Manoj K) 
+  <span class="prompt">$</span> echo "made with care for the graduating class of 2026" — The Last Bell
+  <div class="credit-line">
+    <span>Design And Developed By LAKE</span>
+    <span class="credit-sep">|</span>
+    <span class="credit-name">MANOJ K</span>
+    <span class="credit-sep">|</span>
+    <a class="credit-link" href="https://github.com/Manoj-K-coder" target="_blank" rel="noopener">
+      <i class="fa-brands fa-github"></i> GitHub
+    </a>
+    <span class="credit-sep">|</span>
+    <a class="credit-link" href="https://www.instagram.com/s_h_r_e_e_m_a_n_u?igsh=MXF1bjZhbzJwMGQ1dA==" target="_blank" rel="noopener">
+      <i class="fa-brands fa-instagram"></i> Instagram
+    </a>
+  </div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
@@ -1329,6 +1438,63 @@
     });
   }, { threshold: 0.15 });
   revealEls.forEach(el => io.observe(el));
+
+  // ---- Lightbox: hover-to-preview on desktop, tap-to-open on mobile ----
+  (function(){
+    const overlay   = document.getElementById('lightboxOverlay');
+    const frame     = document.getElementById('lightboxFrame');
+    const imgEl     = document.getElementById('lightboxImg');
+    const nameEl    = document.getElementById('lightboxFilename');
+    const closeBtn  = document.getElementById('lightboxClose');
+    const isDesktopHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    function openLightbox(src, alt, filename){
+      imgEl.src = src;
+      imgEl.alt = alt || '';
+      nameEl.textContent = filename || 'preview.jpg';
+      overlay.classList.add('active');
+    }
+    function closeLightbox(){
+      overlay.classList.remove('active');
+    }
+
+    document.querySelectorAll('.commit-thumb').forEach(thumb => {
+      const img = thumb.querySelector('img');
+      if(!img) return; // skip placeholder thumb with no real image
+      thumb.classList.add('has-lightbox');
+      const filenameEl = thumb.querySelector('.thumb-bar');
+      const filename = filenameEl ? filenameEl.textContent.trim() : 'preview.jpg';
+
+      if(isDesktopHover){
+        thumb.addEventListener('mouseenter', () => {
+          openLightbox(img.currentSrc || img.src, img.alt, filename);
+        });
+      } else {
+        thumb.addEventListener('click', (e) => {
+          e.preventDefault();
+          openLightbox(img.currentSrc || img.src, img.alt, filename);
+        });
+      }
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    overlay.addEventListener('click', (e) => {
+      if(e.target === overlay) closeLightbox();
+    });
+    frame.addEventListener('click', (e) => {
+      // On desktop hover mode, clicking the frame itself (not on img) can close;
+      // clicking anywhere outside the frame already closes via overlay listener.
+      if(isDesktopHover && e.target === frame) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeLightbox();
+    });
+
+    // On desktop, also close the hover preview when the pointer leaves the frame area entirely
+    if(isDesktopHover){
+      overlay.addEventListener('mouseleave', closeLightbox);
+    }
+  })();
 
   // ---- Countdown timer ----
   const targetDate = new Date('2026-07-18T10:00:00');
