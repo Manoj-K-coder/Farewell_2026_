@@ -875,7 +875,7 @@
   </div>
 
   <div class="hero-content">
-    <div class="eyebrow"><span class="c1"></span> <span class="c2" id="inviteText">you are cordially invited</span></div>
+    <div class="eyebrow"><span class="c1"></span> <span class="c2" id="inviteText">you are cordially invited to</span></div>
     <h1 class="display-font"><span class="brace">{</span> The Last <em>Bell</em> <span class="brace">}</span></h1>
     <p class="tagline"><span class="slash">//</span> one more morning together before the classrooms empty and the corridors go idle. dress for celebration — this one compiles for the seniors, from the ones they leave behind.</p>
 
@@ -1123,7 +1123,7 @@
   const usnInput    = document.getElementById('usnInput');
   const usnFeedback = document.getElementById('usnFeedback');
   const inviteText  = document.getElementById('inviteText');
-  const DEFAULT_INVITE_TEXT = 'HI you are cordially invited';
+  const DEFAULT_INVITE_TEXT = 'HI you are cordially invited to';
 
   function setFeedback(msg, cls){
     usnFeedback.textContent = msg;
@@ -1141,7 +1141,7 @@
     }
     const name = STUDENTS[raw];
     if(name){
-      inviteText.textContent = name + ', you are cordially invited';
+      inviteText.textContent = name + ', you are cordially invited to';
       setFeedback('✓ match found — welcome, ' + name, 'ok');
       return name;
     } else {
